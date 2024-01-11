@@ -18,6 +18,21 @@ class ProductListViewModel extends BaseViewModel {
     _navigationService.back();
   }
 
+  List<int> selectedIndexProduct = [];
+
+  int selectedIndex = 0;
+
+  void setFavourite(int index) {
+    if (!selectedIndexProduct.contains(index)) {
+      selectedIndex = index;
+      selectedIndexProduct.add(index);
+    } else {
+      selectedIndex = index;
+      selectedIndexProduct.remove(index);
+    }
+    notifyListeners();
+  }
+
   void navigateToProductListDetailView(Product product) {
     _navigationService.navigateTo(Routes.productListDetailView,
         arguments: ProductListDetailViewArguments(product: product));

@@ -10,7 +10,7 @@ import 'product_list_viewmodel.dart';
 class ProductListView extends StackedView<ProductListViewModel> {
   final TextEditingController search = TextEditingController();
 
-   ProductListView({Key? key}) : super(key: key);
+  ProductListView({Key? key}) : super(key: key);
 
   @override
   Widget builder(
@@ -32,8 +32,7 @@ class ProductListView extends StackedView<ProductListViewModel> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       cursorColor: kPrimaryColor,
-                      onChanged: (value) =>
-                          viewModel.onSearchProduct2(value),
+                      onChanged: (value) => viewModel.onSearchProduct2(value),
                       onSaved: (email) {},
                       decoration: const InputDecoration(
                         hintText: "search",
@@ -44,7 +43,8 @@ class ProductListView extends StackedView<ProductListViewModel> {
                       ),
                     ),
                   ),
-                  CustomBadge(cartLength: viewModel.filterResult.length.toString())
+                  CustomBadge(
+                      cartLength: viewModel.filterResult.length.toString())
                 ],
               ),
               const SizedBox(height: 10),
@@ -135,10 +135,29 @@ class SingleProd extends StatelessWidget {
                       onRatingUpdate: (rating) {},
                     ),
                     const SizedBox(height: 10),
-                    AppText(
-                      text: "£${product.price}",
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        AppText(
+                          text: "£${product.price}",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        Spacer(),
+                        InkWell(
+                            onTap: () {
+                              model.setFavourite(product.id);
+                            },
+                            child:
+                                model.selectedIndexProduct.contains(product.id)
+                                    ? Icon(
+                                        Icons.favorite,
+                                        color: Colors.green,
+                                      )
+                                    : Icon(Icons.favorite_outline)),
+                        SizedBox(
+                          width: 10,
+                        )
+                      ],
                     )
                   ],
                 ),
