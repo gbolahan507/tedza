@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tezda/ui/common/app_colors.dart';
+import 'package:tezda/ui/common/validate.dart';
 import 'package:tezda/ui/views/components/already_have_an_account_acheck.dart';
 import 'package:tezda/ui/views/login/login_viewmodel.dart';
 import 'package:tezda/ui/views/sign_in/sign_in_view.dart';
@@ -16,10 +17,13 @@ class LoginForm extends ViewModelWidget<LoginViewModel> {
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) {
     return Form(
+      key: viewModel.formKey,
       child: Column(
         children: [
           TextFormField(
             controller: username,
+            validator: (value) =>
+                Validate.validateName("Your username", value ?? ''),
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
@@ -36,6 +40,8 @@ class LoginForm extends ViewModelWidget<LoginViewModel> {
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
             child: TextFormField(
               controller: password,
+              validator: (value) =>
+                  Validate.validateName("Your password", value ?? ''),
               textInputAction: TextInputAction.done,
               obscureText: true,
               cursorColor: kPrimaryColor,
@@ -51,11 +57,17 @@ class LoginForm extends ViewModelWidget<LoginViewModel> {
           const SizedBox(height: defaultPadding),
           ElevatedButton(
             onPressed: () {
-              viewModel.login(username.text.trim(), password.text.trim());
+              if (viewModel.formKey.currentState!.validate()) {
+                viewModel.login(username.text.trim(), password.text.trim());
+              }
             },
-            child: Text(
-              "Login".toUpperCase(),
-            ),
+            child: viewModel.isBusy
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : Text(
+                    "Login".toUpperCase(),
+                  ),
           ),
           const SizedBox(height: defaultPadding),
           AlreadyHaveAnAccountCheck(

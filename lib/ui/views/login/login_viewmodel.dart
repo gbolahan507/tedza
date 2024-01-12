@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:tezda/app/app.locator.dart';
@@ -9,6 +10,8 @@ import 'package:tezda/services/login_service.dart';
 class LoginViewModel extends BaseViewModel {
   final _authService = locator<AuthService>();
   final _navigationService = locator<NavigationService>();
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Login get loginUser => _authService.loginUser;
 
